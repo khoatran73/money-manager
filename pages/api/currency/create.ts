@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { name, code, symbol, exchangeRate, writtingStyle, countryId } = req.body;
 
-        const existingCurrency = await prismadb.currency.findUnique({
+        const existingCurrency = await prismadb.currency.findFirst({
             where: { OR: [{ code: code }, { symbol: symbol }] },
         });
 

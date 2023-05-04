@@ -1,0 +1,67 @@
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    MenuList,
+    Select,
+} from '@mui/material';
+import React from 'react';
+import { Control, Controller } from 'react-hook-form';
+import { FormField } from '../CustomForm';
+
+interface Props extends FormField {
+    control: Control<any>;
+}
+
+const CustomSelectField: React.FC<Props> = ({ control, name, options = [], ...props }) => {
+    return (
+        <Controller
+            control={control}
+            name={name}
+            render={({ field: { onChange, onBlur, value }, fieldState: { invalid, error } }) => {
+                const id = `select-field-${name}`;
+                return (
+                    <FormControl fullWidth error={invalid}>
+                        <InputLabel required={props.required} id={id}>
+                            {props.label}
+                        </InputLabel>
+                        <Select
+                            {...props}
+                            inputProps={{
+                                sx: {
+                                    color: '#fff',
+                                },
+                            }}
+                            sx={{
+                                '& fieldset': { boxShadow: 'none !important' },
+                            }}
+                            labelId={id}
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            SelectDisplayProps={{
+                                style: {
+                                    lineHeight: '1.4375em',
+                                },
+                            }}
+                        >
+                            {options.map(({ value, label }) => {
+                                return (
+                                    <MenuItem key={value} value={value}>
+                                        {label}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Select>
+                        {error?.message && <FormHelperText>{error.message}</FormHelperText>}
+                    </FormControl>
+                );
+            }}
+        />
+    );
+};
+
+export default CustomSelectField;

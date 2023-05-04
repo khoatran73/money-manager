@@ -24,11 +24,11 @@ model User {
     createdAt      DateTime  @default(now())
     updatedAt      DateTime  @updatedAt
 
-    currencyId   String?       @db.ObjectId
-    currency     Currency?     @relation(fields: [currencyId], references: [id], onDelete: SetNull, onUpdate: Cascade)
-    categories   Category[]
-    transactions Transaction[]
-    accounts     Account[]
+    currencyId    String?         @db.ObjectId
+    currency      Currency?       @relation(fields: [currencyId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    categories    Category[]
+    transactions  Transaction[]
+    accounts      Account[]
 }
 
 model Account {
@@ -76,17 +76,30 @@ enum WrittingStyle {
     Postfix
 }
 
+model CategoryImage {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    name      String?
+    code      Int
+    image     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    createdById String? @db.ObjectId
+    updatedById String? @db.ObjectId
+
+    Category Category[]
+}
+
 model Category {
-    id              String          @id @default(auto()) @map("_id") @db.ObjectId
-    name            String
-    iconStr         String
-    color           String
-    backgroundColor String
-    level           Int
-    index           Int
-    type            TransactionType @default(Expense)
-    createdAt       DateTime        @default(now())
-    updatedAt       DateTime        @updatedAt
+    id        String          @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    level     Int
+    index     Int
+    type      TransactionType @default(Expense)
+    createdAt DateTime        @default(now())
+    updatedAt DateTime        @updatedAt
+
+    imageId String        @db.ObjectId
+    image   CategoryImage @relation(fields: [imageId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     userId       String        @db.ObjectId
     user         User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)

@@ -42,7 +42,9 @@ export default function App({
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
                         <DashboardLayout>
-                            <Component {...pageProps} />
+                            <main className="py-4">
+                                <Component {...pageProps} />
+                            </main>
                         </DashboardLayout>
                     </ThemeProvider>
                 </AuthProvider>

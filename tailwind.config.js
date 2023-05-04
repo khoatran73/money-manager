@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const array12Col = Array.from({ length: 12 }, (_, i) => i + 1);
+
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -19,4 +22,8 @@ module.exports = {
     },
   },
   plugins: [],
+  safelist: [
+    ...array12Col.map(x => `col-span-${x}`),
+],
+  important: 'body'
 }

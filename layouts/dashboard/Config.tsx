@@ -6,6 +6,8 @@ import UserIcon from '@heroicons/react/24/solid/UserIcon';
 import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
+import QueueListIcon from '@heroicons/react/24/solid/QueueListIcon';
+
 import { SvgIcon } from '@mui/material';
 
 const ConfigItems = [
@@ -15,6 +17,15 @@ const ConfigItems = [
         icon: (
             <SvgIcon fontSize="small">
                 <ChartBarIcon />
+            </SvgIcon>
+        ),
+    },
+    {
+        title: 'Category',
+        path: '/category',
+        icon: (
+            <SvgIcon fontSize="small">
+                <QueueListIcon />
             </SvgIcon>
         ),
     },
