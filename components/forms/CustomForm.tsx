@@ -4,18 +4,28 @@ import { ComboOption, GridClassNameCol } from '@/types/shared';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from '@mui/material';
 import { FieldErrors, useForm } from 'react-hook-form';
-import { MixedSchema, NumberSchema, ObjectShape, StringSchema, number, object, string } from 'yup';
+import {
+    MixedSchema,
+    NumberSchema,
+    ObjectSchema,
+    ObjectShape,
+    StringSchema,
+    mixed,
+    number,
+    object,
+    string,
+} from 'yup';
+import CustomDatePickerField from './fields/CustomDatePickerField';
+import CustomImagePickerField from './fields/CustomImagePickerField';
 import CustomPasswordField from './fields/CustomPasswordField';
 import CustomSelectField from './fields/CustomSelectField';
 import CustomTextField from './fields/CustomTextField';
-import CustomDatePickerField from './fields/CustomDatePickerField';
-import CustomImagePickerField from './fields/CustomImagePickerField';
-import { mixed } from 'yup';
-import { ObjectSchema } from 'yup';
 
 export interface Props {
     fields: FormField[];
     initialValues?: Record<string, any>;
+    onSubmit: (formValues: Record<string, any> | any) => void;
+    onError?: (errors: FieldErrors<Record<string, any>>) => void;
 }
 
 export interface FormField {
@@ -26,9 +36,8 @@ export interface FormField {
     required?: boolean;
     disabled?: boolean;
     options?: ComboOption[];
+    defaultValue?: any;
 }
-
-// interface ref ...
 
 const convertObjectShape = (fields: FormField[]): ObjectShape => {
     const objectShape: ObjectShape = {};
@@ -50,10 +59,14 @@ const convertObjectShape = (fields: FormField[]): ObjectShape => {
                 break;
             case 'image':
                 const _2MbSize = 2097152;
-                schemaItem = mixed().test('fileSize', 'The file is too large', (value?: File | any) => {
-                    if (!value) return true; // attachment is optional
-                    return value.size <= _2MbSize;
-                });
+                schemaItem = mixed().test(
+                    'fileSize',
+                    'The file is too large',
+                    (value?: File | any) => {
+                        if (!value) return true; // attachment is optional
+                        return value.size <= _2MbSize;
+                    }
+                );
                 break;
             default:
                 break;
@@ -70,21 +83,13 @@ const convertObjectShape = (fields: FormField[]): ObjectShape => {
     return objectShape;
 };
 
-const CustomForm: React.FC<Props> = ({ fields, initialValues }) => {
+const CustomForm: React.FC<Props> = ({ fields, initialValues, onError, onSubmit }) => {
     const schema = object().shape(convertObjectShape(fields));
 
     const { handleSubmit, control, getValues } = useForm({
         defaultValues: initialValues,
         resolver: yupResolver(schema),
     });
-
-    const onSubmit = (formValues: Record<string, any>) => {
-        console.log('formValues: ', formValues);
-    };
-
-    const onError = (errors: FieldErrors<Record<string, any>>) => {
-        console.log('errors: ', errors);
-    };
 
     const renderField = (field: FormField) => {
         switch (field.type) {

@@ -159,7 +159,7 @@ export const createComponents = (config: {
                     borderStyle: 'solid',
                     borderWidth: 1,
                     overflow: 'hidden',
-                    borderColor: palette.neutral[200],
+                    borderColor: palette.neutral[400],
                     transition: muiTheme.transitions.create(['border-color', 'box-shadow']),
                     '&:hover': {
                         backgroundColor: palette.action.hover,
@@ -176,11 +176,9 @@ export const createComponents = (config: {
                     [`&.${filledInputClasses.focused}`]: {
                         backgroundColor: 'transparent',
                         borderColor: palette.primary.main,
-                        boxShadow: `${palette.primary.main} 0 0 0 2px`,
                     },
                     [`&.${filledInputClasses.error}`]: {
                         borderColor: palette.error.main,
-                        boxShadow: `${palette.error.main} 0 0 0 2px`,
                     },
                 },
                 input: {
@@ -196,20 +194,18 @@ export const createComponents = (config: {
                     '&:hover': {
                         backgroundColor: palette.action.hover,
                         [`& .${outlinedInputClasses.notchedOutline}`]: {
-                            borderColor: palette.neutral[200],
+                            borderColor: palette.neutral[400],
                         },
                     },
                     [`&.${outlinedInputClasses.focused}`]: {
                         backgroundColor: 'transparent',
                         [`& .${outlinedInputClasses.notchedOutline}`]: {
                             borderColor: palette.primary.main,
-                            boxShadow: `${palette.primary.main} 0 0 0 2px`,
                         },
                     },
                     [`&.${filledInputClasses.error}`]: {
                         [`& .${outlinedInputClasses.notchedOutline}`]: {
                             borderColor: palette.error.main,
-                            boxShadow: `${palette.error.main} 0 0 0 2px`,
                         },
                     },
                 },
@@ -219,7 +215,7 @@ export const createComponents = (config: {
                     lineHeight: '24px',
                 },
                 notchedOutline: {
-                    borderColor: palette.neutral[200],
+                    borderColor: palette.neutral[400],
                     transition: muiTheme.transitions.create(['border-color', 'box-shadow']),
                 },
             },

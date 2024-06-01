@@ -1,11 +1,11 @@
 import { Typography } from '@mui/material';
 import Image from 'next/image';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, DragEventHandler } from 'react';
 
-import { Control, Controller } from 'react-hook-form';
-import { FormField } from '../CustomForm';
 import { error as errorColor, neutral as neutralColor } from '@/theme/colors';
 import _ from 'lodash';
+import { Control, Controller } from 'react-hook-form';
+import { FormField } from '../CustomForm';
 
 interface ImagePickerProps extends Partial<FormField> {
     onChange?: (file?: File) => void;
@@ -24,24 +24,52 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
     value,
 }) => {
     const [uploadState, setUploadState] = React.useState('initial');
+    const [isOnDraggableZone, setIsOnDraggableZone] = React.useState(false);
     const [image, setImage] = React.useState<string>('');
 
     const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
-        var file = event.target.files?.[0];
+        const file = event.target.files?.[0];
+        readAsDataURL(file);
+    };
+
+    const readAsDataURL = (file?: File) => {
         onChange?.(file);
         const reader = new FileReader();
         if (file) {
             reader.readAsDataURL(file);
-            reader.onloadend = function (e) {
+            reader.onloadend = () => {
                 setImage(reader.result as string);
                 setUploadState('uploaded');
             };
         }
     };
 
+    const handleEnterDraggableZone: DragEventHandler<HTMLLabelElement> = (event) => {
+        event.preventDefault();
+        if (!isOnDraggableZone) setIsOnDraggableZone(true);
+    };
+
+    const handleLeaveDraggableZone: DragEventHandler<HTMLLabelElement> = (event) => {
+        event.preventDefault();
+        if (!!isOnDraggableZone) setIsOnDraggableZone(false);
+    };
+
+    const handleDrop: DragEventHandler<HTMLLabelElement> = (event) => {
+        event.preventDefault();
+        const file = event.dataTransfer.files?.[0];
+        readAsDataURL(file);
+    };
+
     return (
         <div className="">
-            <div className="w-full h-36 rounded-lg relative">
+            <div
+                className="w-full h-36 rounded-lg relative overflow-hidden border"
+                style={{
+                    borderColor: error ? _.get(errorColor, 'main') : neutralColor[400],
+                    transition:
+                        'border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                }}
+            >
                 <input
                     type="file"
                     className="hidden"
@@ -55,6 +83,11 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
                 <label
                     htmlFor={`image-picker-field${name}`}
                     className="w-full h-full flex z-10 relative cursor-pointer"
+                    draggable
+                    onDragEnter={handleEnterDraggableZone}
+                    onDrop={handleDrop}
+                    onDragLeave={handleLeaveDraggableZone}
+                    onDragOver={handleEnterDraggableZone}
                 >
                     {image ? (
                         <Image
@@ -63,10 +96,9 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
                             width={0}
                             height={0}
                             style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'contain',
+                                borderRadius: 'inherit',
                             }}
+                            className="w-full h-full object-contain"
                         />
                     ) : (
                         <div className="px-[14px] py-[16.5px]">
@@ -74,20 +106,20 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
                                 variant="caption"
                                 className="block"
                                 sx={{
-                                    color: 'neutral.500',
+                                    color: 'neutral.400',
                                 }}
                             >
                                 Hình ảnh
                             </Typography>
-                            <div>
-                                Drop file to attach, or{' '}
-                                <span className="text-green-500">browse</span>
+                            <div className="pt-2 pb-1">
+                                Kéo thả để đính kèm hoặc
+                                <span className="text-green-500 ml-1">Tải lên</span>
                             </div>
                             <Typography
                                 className="block"
                                 variant="caption"
                                 sx={{
-                                    color: 'neutral.600',
+                                    color: 'neutral.400',
                                 }}
                             >
                                 Image file formats - JPG, JPEG, PNG, GIF
@@ -96,7 +128,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
                                 variant="caption"
                                 className="block"
                                 sx={{
-                                    color: 'neutral.600',
+                                    color: 'neutral.400',
                                 }}
                             >
                                 Image size less than 2MB
@@ -104,15 +136,6 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
                         </div>
                     )}
                 </label>
-                <fieldset
-                    className="w-full h-full absolute top-0 left-0 right-0 bottom-0 border"
-                    style={{
-                        borderRadius: 'inherit',
-                        borderColor: error ? _.get(errorColor, 'main') : neutralColor[200],
-                        transition:
-                            'border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-                    }}
-                ></fieldset>
             </div>
             {helperText && (
                 <p

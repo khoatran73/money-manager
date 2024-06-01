@@ -1,12 +1,10 @@
+import { error as errorColor } from '@/theme/colors';
 import { FormControl, FormHelperText } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers';
+import _ from 'lodash';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { FormField } from '../CustomForm';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { format } from 'date-fns';
-import _ from 'lodash';
-import { error as errorColor, neutral as neutralColor } from '@/theme/colors';
 
 interface Props extends FormField {
     control: Control<any>;
@@ -23,14 +21,11 @@ const CustomDatePickerField: React.FC<Props> = ({ control, name, ...props }) => 
                         <DatePicker
                             label={props.label}
                             sx={{
-                                '& fieldset': { boxShadow: 'none !important' },
                                 '& .MuiFilledInput-root': error
                                     ? {
                                           borderColor: _.get(errorColor, 'main'),
-                                          color: '#fff',
-                                          boxShadow: 'none !important',
                                       }
-                                    : { color: '#fff', boxShadow: 'none !important' },
+                                    : {},
                                 '& .MuiFilledInput-root.Mui-focused': {
                                     borderWidth: '2px',
                                 },

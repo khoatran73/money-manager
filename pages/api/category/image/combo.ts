@@ -10,13 +10,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { currentUser } = await serverAuth(req, res);
 
-        const categories = await prismadb.category.findMany({
-            where: {
-                userId: currentUser.id,
-            },
+        const cateImages = await prismadb.categoryImage.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
         });
 
-        return res.status(200).json({ data: categories, status: 200 });
+        const combo = cateImages.map((cateImg) => ({
+            value: cateImg.id,
+            label: cateImg.image
+        }))
+
+        return res.status(200).json({ data: combo, status: 200 });
     } catch (error) {
         return res.status(400).json({ error: `Something went wrong: ${error}` });
     }

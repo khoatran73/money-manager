@@ -57,8 +57,6 @@ const CustomModal = forwardRef<CustomModalRef, Props>(({ width, title, body, foo
             }}
             PaperProps={{
                 sx: {
-                    backgroundColor: 'neutral.800',
-                    color: '#fff',
                     minWidth: 400,
                     maxWidth: '100vw',
                     width: width ?? 400,
@@ -74,7 +72,7 @@ const CustomModal = forwardRef<CustomModalRef, Props>(({ width, title, body, foo
             >
                 <div>{title}</div>
                 <div className="w-6 h-6 rounded-full duration-300">
-                    <IconButton sx={{ color: '#fff' }} onClick={handleClose}>
+                    <IconButton onClick={handleClose}>
                         <SvgIcon fontSize="small">
                             <XMarkIcon />
                         </SvgIcon>

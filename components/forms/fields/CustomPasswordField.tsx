@@ -17,14 +17,6 @@ const CustomPasswordField: React.FC<Props> = ({ control, name, ...props }) => {
                     <TextField
                         {...props}
                         variant="outlined"
-                        inputProps={{
-                            sx: {
-                                color: '#fff',
-                            },
-                        }}
-                        sx={{
-                            '& fieldset': { boxShadow: 'none !important' },
-                        }}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}

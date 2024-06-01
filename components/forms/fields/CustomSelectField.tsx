@@ -1,13 +1,4 @@
-import {
-    FormControl,
-    FormHelperText,
-    InputLabel,
-    ListItemIcon,
-    ListItemText,
-    MenuItem,
-    MenuList,
-    Select,
-} from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { FormField } from '../CustomForm';
@@ -30,14 +21,6 @@ const CustomSelectField: React.FC<Props> = ({ control, name, options = [], ...pr
                         </InputLabel>
                         <Select
                             {...props}
-                            inputProps={{
-                                sx: {
-                                    color: '#fff',
-                                },
-                            }}
-                            sx={{
-                                '& fieldset': { boxShadow: 'none !important' },
-                            }}
                             labelId={id}
                             value={value}
                             onChange={onChange}
